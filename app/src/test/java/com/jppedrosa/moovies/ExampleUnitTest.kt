@@ -1,4 +1,4 @@
-package com.jppedrosa.mvvmmovies
+package com.jppedrosa.moovies
 
 import org.junit.Test
 

@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.jppedrosa.moovies.presentation.screens.details.DetailsScreen
 import com.jppedrosa.moovies.presentation.screens.home.HomeScreen
+import com.jppedrosa.moovies.presentation.screens.splash.SplashScreen
 
 /**
  * @author João Pedro Pedrosa (<a href="mailto:joaopopedrosa@gmail.com">joaopopedrosa@gmail.com</a>) on 22/09/2022.
@@ -18,8 +19,11 @@ fun MooviesNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = Screen.HomeScreen.route
+        startDestination = Screen.SplashScreen.route
     ) {
+        composable(route = Screen.SplashScreen.route) {
+            SplashScreen(navController = navController)
+        }
         composable(Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
         }

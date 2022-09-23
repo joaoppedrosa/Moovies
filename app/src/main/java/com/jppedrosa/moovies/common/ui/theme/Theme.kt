@@ -1,4 +1,4 @@
-package com.jppedrosa.moovies.ui.theme
+package com.jppedrosa.moovies.common.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

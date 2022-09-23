@@ -22,7 +22,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        buildConfigField "String", "TMDB_BASE_URL", configsProperties['TMDB_BASE_URL']
         buildConfigField "String", "TMDB_API_KEY", configsProperties['TMDB_API_KEY']
+        buildConfigField "String", "TMDB_ACCESS_TOKEN", configsProperties['TMDB_ACCESS_TOKEN']
     }
 
     buildTypes {

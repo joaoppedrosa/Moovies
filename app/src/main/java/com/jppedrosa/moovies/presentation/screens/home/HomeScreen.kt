@@ -1,6 +1,5 @@
 package com.jppedrosa.moovies.presentation.screens.home
 
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,16 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jppedrosa.moovies.R
+import com.jppedrosa.moovies.common.utils.ImageUtils
+import com.jppedrosa.moovies.data.dto.MovieDto
 import com.jppedrosa.moovies.presentation.navigation.Screen
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
@@ -32,7 +34,10 @@ import com.skydoves.landscapist.glide.GlideImage
  * @author João Pedro Pedrosa (<a href="mailto:joaopopedrosa@gmail.com">joaopopedrosa@gmail.com</a>) on 22/09/2022.
  */
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -51,12 +56,29 @@ fun HomeScreen(navController: NavController) {
     ) { contentPadding ->
         Box(
             Modifier
+                .fillMaxSize()
                 .background(
                     color = colorResource(R.color.background_color)
                 )
                 .padding(contentPadding)
         ) {
-            MainContent(navController)
+
+            val state = viewModel.state.value
+            MainContent(navController, state.movies)
+            if (state.error.isNotBlank()) {
+                Text(
+                    text = state.error,
+                    color = MaterialTheme.colors.error,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .align(Alignment.Center)
+                )
+            }
+            if (state.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }
@@ -64,22 +86,16 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    moviesList: List<String> = listOf(
-        "Avatar",
-        "Harry Potter",
-        "300",
-        "Interstellar",
-        "Eternal Sunshine of a Spotless Mind"
-    )
+    moviesList: List<MovieDto>
 ) {
     Column(
         modifier = Modifier
             .padding(12.dp)
     ) {
         LazyColumn {
-            items(items = moviesList) {
-                MovieRow(navController = navController, movie = it) { movie ->
-                    navController.navigate(route = Screen.DetailsScreen.route + "/$movie")
+            items(moviesList) { movie ->
+                MovieRow(movie = movie) { movieId ->
+                    navController.navigate(route = Screen.DetailsScreen.route + "/$movieId")
                 }
             }
         }
@@ -88,8 +104,7 @@ fun MainContent(
 
 @Composable
 fun MovieRow(
-    navController: NavController,
-    movie: String,
+    movie: MovieDto,
     onItemClick: (String) -> Unit
 ) {
     Box(
@@ -101,7 +116,7 @@ fun MovieRow(
                 color = Color.Transparent
             )
             .clickable {
-                onItemClick(movie)
+                onItemClick(movie.id.toString())
             }
     ) {
         Card(
@@ -127,7 +142,7 @@ fun MovieRow(
                     horizontalAlignment = Alignment.Start,
                 ) {
                     Text(
-                        text = movie,
+                        text = movie.title!!,
                         color = Color.White,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold,
@@ -136,14 +151,14 @@ fun MovieRow(
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = movie,
+                        text = movie.releaseDate!!,
                         color = colorResource(R.color.gray_text_color),
                         fontSize = 12.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = movie,
+                        text = movie.popularity.toString(),
                         color = colorResource(R.color.gray_text_color),
                         fontSize = 12.sp,
                         maxLines = 1,
@@ -163,7 +178,7 @@ fun MovieRow(
             GlideImage(
                 previewPlaceholder = R.drawable.ic_launcher_background,
                 modifier = Modifier.border(0.dp, Color.Transparent, RoundedCornerShape(16.dp)),
-                imageModel = "https://upload.wikimedia.org/wikipedia/pt/3/3a/Interstellar_Filme.png",
+                imageModel = ImageUtils.getTmdbUrlImage(movie.posterPath!!),
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.FillBounds,
                     alignment = Alignment.BottomCenter

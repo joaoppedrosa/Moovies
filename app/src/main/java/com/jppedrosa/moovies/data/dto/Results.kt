@@ -9,7 +9,7 @@ class Results<T>(
     @SerializedName("page")
     var page: Int? = null,
     @SerializedName("results")
-    var results: ArrayList<T> = arrayListOf(),
+    var results: List<T>? = emptyList<T>(),
     @SerializedName("total_pages")
     var totalPages: Int? = null,
     @SerializedName("total_results")

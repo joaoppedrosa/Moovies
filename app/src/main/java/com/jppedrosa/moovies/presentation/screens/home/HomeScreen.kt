@@ -176,7 +176,7 @@ fun MovieRow(
             horizontalArrangement = Arrangement.Start
         ) {
             GlideImage(
-                previewPlaceholder = R.drawable.ic_launcher_background,
+                previewPlaceholder = R.mipmap.ic_launcher_round_adaptive_back,
                 modifier = Modifier.border(0.dp, Color.Transparent, RoundedCornerShape(16.dp)),
                 imageModel = ImageUtils.getTmdbUrlImage(movie.posterPath!!),
                 imageOptions = ImageOptions(

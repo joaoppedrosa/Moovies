@@ -1,5 +1,8 @@
 package com.jppedrosa.moovies.presentation.screens.home
 
+import android.widget.Space
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,7 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.jppedrosa.moovies.R
 import com.jppedrosa.moovies.presentation.navigation.Screen
@@ -28,15 +36,25 @@ fun HomeScreen(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
-                backgroundColor = Color.Black,
-                elevation = 5.dp
+                backgroundColor = colorResource(R.color.background_color),
+                elevation = 16.dp
             ) {
-                Text(text = "Moovies", color = Color.White)
+                Spacer(modifier = Modifier.width(22.dp))
+                Text(
+                    text = stringResource(R.string.app_name),
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                )
             }
         },
     ) { contentPadding ->
         Box(
-            modifier = Modifier.padding(contentPadding)
+            Modifier
+                .background(
+                    color = colorResource(R.color.background_color)
+                )
+                .padding(contentPadding)
         ) {
             MainContent(navController)
         }
@@ -46,13 +64,22 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MainContent(
     navController: NavController,
-    moviesList: List<String> = listOf("Avatar", "Harry Potter", "300")
+    moviesList: List<String> = listOf(
+        "Avatar",
+        "Harry Potter",
+        "300",
+        "Interstellar",
+        "Eternal Sunshine of a Spotless Mind"
+    )
 ) {
-    Column(modifier = Modifier.padding(12.dp)) {
+    Column(
+        modifier = Modifier
+            .padding(12.dp)
+    ) {
         LazyColumn {
             items(items = moviesList) {
                 MovieRow(navController = navController, movie = it) { movie ->
-                    navController.navigate(route = Screen.DetailsScreen.route)
+                    navController.navigate(route = Screen.DetailsScreen.route + "/$movie")
                 }
             }
         }
@@ -65,38 +92,83 @@ fun MovieRow(
     movie: String,
     onItemClick: (String) -> Unit
 ) {
-    Card(
+    Box(
         modifier = Modifier
-            .padding(4.dp)
             .fillMaxWidth()
-            .height(130.dp)
+            .height(200.dp)
+            .padding(6.dp)
+            .background(
+                color = Color.Transparent
+            )
             .clickable {
                 onItemClick(movie)
-            },
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        elevation = 6.dp
+            }
     ) {
+        Card(
+            modifier = Modifier
+                .padding(4.dp)
+                .fillMaxWidth()
+                .height(140.dp)
+                .align(alignment = Alignment.BottomStart),
+            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+            elevation = 6.dp,
+            backgroundColor = colorResource(R.color.card_background_color)
+        ) {
+            Row(
+                modifier = Modifier
+                    .height(140.dp)
+                    .padding(6.dp)
+                    .fillMaxWidth()
+            ) {
+                Spacer(modifier = Modifier.width(120.dp))
+                Column(
+                    modifier = Modifier.fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    Text(
+                        text = movie,
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = movie,
+                        color = colorResource(R.color.gray_text_color),
+                        fontSize = 12.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Text(
+                        text = movie,
+                        color = colorResource(R.color.gray_text_color),
+                        fontSize = 12.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .height(160.dp)
+                .width(100.dp)
+                .offset(x = 16.dp, y = 16.dp),
+            verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Start
         ) {
-            Surface(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RectangleShape,
-                elevation = 4.dp
-            ) {
-                GlideImage(
-                    previewPlaceholder = R.drawable.ic_launcher_background,
-                    imageModel = "https://upload.wikimedia.org/wikipedia/pt/3/3a/Interstellar_Filme.png",
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    )
+            GlideImage(
+                previewPlaceholder = R.drawable.ic_launcher_background,
+                modifier = Modifier.border(0.dp, Color.Transparent, RoundedCornerShape(16.dp)),
+                imageModel = "https://upload.wikimedia.org/wikipedia/pt/3/3a/Interstellar_Filme.png",
+                imageOptions = ImageOptions(
+                    contentScale = ContentScale.FillBounds,
+                    alignment = Alignment.BottomCenter
                 )
-            }
-            Text(text = movie)
+            )
         }
     }
 }

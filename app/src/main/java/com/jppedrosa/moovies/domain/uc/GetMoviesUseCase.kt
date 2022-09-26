@@ -24,12 +24,13 @@ class GetMoviesUseCase @Inject constructor(
             emit(Resource.Loading())
             val response = repository.getMovies()
             val moviesList = response.results
-            database.getMovieDao().insertAll(moviesList?.asDatabaseModel())
+            database.getMovieDao().insertAll(moviesList?.asDatabaseModel()) //TODO move this to the repository
             emit(Resource.Success(moviesList))
         } catch (e: HttpException) {
             emit(Resource.Error(e.localizedMessage ?: "Unexpected error!"))
         } catch (e: IOException) {
-            val moviesList = database.getMovieDao().getAllMovies()
+            //Load cache data if there is not internet connection
+            val moviesList = database.getMovieDao().getAllMovies() //TODO move this to the repository
             if (moviesList.isNotEmpty()) {
                 emit(Resource.Success(moviesList.asDomainModel()))
                 return@flow

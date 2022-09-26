@@ -6,7 +6,7 @@ package com.jppedrosa.moovies.common.utils
 class ImageUtils {
 
     companion object {
-        public fun getTmdbUrlImage(path: String) =
+        public fun getTmdbUrlImage(path: String?) =
             "https://image.tmdb.org/t/p/w300_and_h450_bestv2/$path"
     }
 }

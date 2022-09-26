@@ -24,8 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jppedrosa.moovies.R
-import com.jppedrosa.moovies.common.utils.ImageUtils
-import com.jppedrosa.moovies.data.dto.MovieDto
+import com.jppedrosa.moovies.domain.model.Movie
 import com.jppedrosa.moovies.presentation.navigation.Screen
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
@@ -86,7 +85,7 @@ fun HomeScreen(
 @Composable
 fun MainContent(
     navController: NavController,
-    moviesList: List<MovieDto>
+    moviesList: List<Movie>
 ) {
     Column(
         modifier = Modifier
@@ -104,7 +103,7 @@ fun MainContent(
 
 @Composable
 fun MovieRow(
-    movie: MovieDto,
+    movie: Movie,
     onItemClick: (String) -> Unit
 ) {
     Box(
@@ -151,14 +150,14 @@ fun MovieRow(
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = movie.releaseDate!!,
+                        text = "---",
                         color = colorResource(R.color.gray_text_color),
                         fontSize = 12.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = movie.popularity.toString(),
+                        text = movie.description.toString(),
                         color = colorResource(R.color.gray_text_color),
                         fontSize = 12.sp,
                         maxLines = 1,
@@ -178,7 +177,7 @@ fun MovieRow(
             GlideImage(
                 previewPlaceholder = R.mipmap.ic_launcher_round_adaptive_back,
                 modifier = Modifier.border(0.dp, Color.Transparent, RoundedCornerShape(16.dp)),
-                imageModel = ImageUtils.getTmdbUrlImage(movie.posterPath!!),
+                imageModel = movie.image,
                 imageOptions = ImageOptions(
                     contentScale = ContentScale.FillBounds,
                     alignment = Alignment.BottomCenter

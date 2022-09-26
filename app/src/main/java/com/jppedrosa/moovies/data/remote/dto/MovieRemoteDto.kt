@@ -1,11 +1,14 @@
-package com.jppedrosa.moovies.data.dto
+package com.jppedrosa.moovies.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
+import com.jppedrosa.moovies.common.utils.ImageUtils
+import com.jppedrosa.moovies.data.database.entities.MovieEntity
+import com.jppedrosa.moovies.domain.model.Movie
 
 /**
  * @author João Pedro Pedrosa (<a href="mailto:joaopopedrosa@gmail.com">joaopopedrosa@gmail.com</a>) on 23/09/2022.
  */
-class MovieDto(
+data class MovieRemoteDto(
     @SerializedName("adult")
     var adult: Boolean? = null,
     @SerializedName("backdrop_path")
@@ -35,3 +38,31 @@ class MovieDto(
     @SerializedName("vote_count")
     var voteCount: Int? = null
 )
+
+/**
+ * Convert remote response to domain layer data object
+ */
+fun List<MovieRemoteDto>.asDomainModel(): List<Movie> {
+    return map {
+        Movie(
+            id = it.id.toString(),
+            title = it.title,
+            description = it.overview,
+            image = ImageUtils.getTmdbUrlImage(it.posterPath)
+        )
+    }
+}
+
+/**
+ * Convert remote response to database layer data object
+ */
+fun List<MovieRemoteDto>.asDatabaseModel(): List<MovieEntity> {
+    return map {
+        MovieEntity(
+            id = it.id.toString(),
+            title = it.title,
+            description = it.overview,
+            image = ImageUtils.getTmdbUrlImage(it.posterPath)
+        )
+    }
+}

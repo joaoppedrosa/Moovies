@@ -23,6 +23,14 @@ class HomeViewModel @Inject constructor(
     val state: State<HomeState> = _state
 
     init {
+        refresh()
+    }
+
+    /**
+     * Refresh list of movies
+     *
+     */
+    fun refresh() {
         getMovies()
     }
 

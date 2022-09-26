@@ -2,7 +2,7 @@
 
 Moovies is a trending movies app that shows you the most actual treading movies.
 
-The app was built using MVVM + Hilt + Coroutines + Jetpack Compose + Retrofit
+The app was built using MVVM + Hilt + Coroutines + Jetpack Compose + Retrofit + Room
 
 # UI/UX
 

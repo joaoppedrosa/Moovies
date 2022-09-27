@@ -1,4 +1,4 @@
-package com.jppedrosa.moovies
+package com.jppedrosa.moovies.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,7 +13,7 @@ import org.junit.runner.Description
  * @author João Pedro Pedrosa (<a href="mailto:joaopopedrosa@gmail.com">joaopopedrosa@gmail.com</a>) on 23/09/2022.
  */
 @ExperimentalCoroutinesApi
-class MainCoroutineRule(private val dispatcher: TestDispatcher = StandardTestDispatcher()) :
+class MainCoroutineScopeRule(private val dispatcher: TestDispatcher = StandardTestDispatcher()) :
     TestWatcher() {
 
     override fun starting(description: Description?) {

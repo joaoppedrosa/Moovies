@@ -2,8 +2,20 @@ package com.jppedrosa.moovies.presentation.screens.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -41,7 +53,8 @@ fun DetailsScreen(
                         contentDescription = "Arrow Back",
                         modifier = Modifier.clickable {
                             navController.popBackStack()
-                        })
+                        }
+                    )
                     Spacer(modifier = Modifier.width(16.dp))
                     if (movie != null) {
                         Text(text = movie, color = Color.White)

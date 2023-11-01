@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * @author João Pedro Pedrosa (<a href="mailto:joaopopedrosa@gmail.com">joaopopedrosa@gmail.com</a>) on 26/09/2022.
  */
-data class  Results<T>(
+data class Results<T>(
     @SerializedName("page")
     var page: Int? = null,
     @SerializedName("results")

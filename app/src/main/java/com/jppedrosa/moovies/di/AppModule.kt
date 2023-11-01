@@ -45,21 +45,25 @@ class AppModule {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
         httpClient.addInterceptor(interceptor)
-        httpClient.addInterceptor(Interceptor { chain: Interceptor.Chain ->
-            val original: Request = chain.request()
-            val request: Request = original.newBuilder()
-                .header("Content-Type", "application/json;charset=utf-8")
-                .method(original.method, original.body)
-                .build()
-            chain.proceed(request)
-        })
-        httpClient.addInterceptor(Interceptor { chain: Interceptor.Chain ->
-            val request: Request = chain.request()
-            val newRequest: Request = request.newBuilder()
-                .addHeader("Authorization", "Bearer " + BuildConfig.TMDB_ACCESS_TOKEN)
-                .build()
-            chain.proceed(newRequest)
-        })
+        httpClient.addInterceptor(
+            Interceptor { chain: Interceptor.Chain ->
+                val original: Request = chain.request()
+                val request: Request = original.newBuilder()
+                    .header("Content-Type", "application/json;charset=utf-8")
+                    .method(original.method, original.body)
+                    .build()
+                chain.proceed(request)
+            }
+        )
+        httpClient.addInterceptor(
+            Interceptor { chain: Interceptor.Chain ->
+                val request: Request = chain.request()
+                val newRequest: Request = request.newBuilder()
+                    .addHeader("Authorization", "Bearer " + BuildConfig.TMDB_ACCESS_TOKEN)
+                    .build()
+                chain.proceed(newRequest)
+            }
+        )
         return httpClient.build()
     }
 

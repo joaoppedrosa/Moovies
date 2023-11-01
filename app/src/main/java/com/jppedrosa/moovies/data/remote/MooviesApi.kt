@@ -11,5 +11,4 @@ interface MooviesApi {
 
     @GET("movie/popular?language=en-US&page=1")
     suspend fun getMovies(): ResultsRemoteDto<MovieRemoteDto>
-
 }

@@ -27,7 +27,8 @@ fun MooviesNavigation() {
         composable(Screen.HomeScreen.route) {
             HomeScreen(navController = navController)
         }
-        composable(Screen.DetailsScreen.route + "/{movie}",
+        composable(
+            Screen.DetailsScreen.route + "/{movie}",
             arguments = listOf(
                 navArgument(name = "movie") {
                     type = NavType.StringType

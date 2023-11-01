@@ -17,5 +17,4 @@ interface MovieDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(moviesList: List<MovieEntity>?)
-
 }
